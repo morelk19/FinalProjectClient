@@ -87,6 +87,7 @@ function ShowTicketDetails(props){
 
 //simple component for table header / row display
 function TicketItem(props){
+  console.log(props.ticket)
   return (<div>
       <table className="table table-hover table-dark">
         <tbody>
@@ -103,7 +104,15 @@ function TicketItem(props){
           <tr>
             <th scope="row">3</th>
             <td>Related Ticket ID's</td>
-            <td>{ props.ticket.relatedTickedIds }</td>
+            {/* { props.ticket.relatedTickedIds.map((ids)=>{
+              return(
+                <tr>
+                  <th scope="row"></th>
+                  <td>{ids}</td>
+                </tr>
+              )
+            })} */}
+            <td>{ props.ticket.relatedTicketIds }</td>
           </tr>
           <tr>
             <th scope="row">4</th>
@@ -112,27 +121,27 @@ function TicketItem(props){
           </tr>
 
           <tr>
-            <th scope="row">4</th>
+            <th scope="row">5</th>
             <td>Status</td>
             <td>{ props.ticket.status }</td>
           </tr>
           <tr>
-            <th scope="row">4</th>
+            <th scope="row">6</th>
             <td>Created At</td>
             <td>{ props.ticket.createdAt }</td>
           </tr>
           <tr>
-            <th scope="row">4</th>
+            <th scope="row">7</th>
             <td>Created by ID</td>
             <td>{ props.ticket.createdById }</td>
           </tr>
           <tr>
-            <th scope="row">4</th>
+            <th scope="row">8</th>
             <td>Last Modified</td>
             <td>{ props.ticket.lastModified }</td>
           </tr><tr>
-            <th scope="row">4</th>
-            <td>lastUpdatedById</td>
+            <th scope="row">9</th>
+            <td>Last Updated By Id</td>
             <td>{ props.ticket.lastUpdatedById }</td>
           </tr>
         </tbody>

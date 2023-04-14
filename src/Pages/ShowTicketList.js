@@ -17,9 +17,8 @@ function ShowTicketList(props){
   console.log();
   useEffect(() => {
     axios
-    .get(REACT_BACKEND+ "/tickets/all")
+    .get(REACT_BACKEND+ "/all")
     .then(res => {
-      console.log(res.data.tickets);
       setTickets(res.data.tickets);
     })
     .catch(err =>{

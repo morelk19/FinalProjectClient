@@ -7,6 +7,7 @@ import RegistrationPage from "./Pages/RegistrationPage";
 import ShowTicketList from "./Pages/ShowTicketList";
 import ShowTicketDetails from "./Pages/ShowTicketDetails";
 import CreateTicket from "./Pages/CreateTicket";
+import UpdateTicketInfo from "./Pages/UpdateTicketInfo";
 
 //importing four components 
 
@@ -46,7 +47,11 @@ function App() {
 				{
 					path: "/show-ticket/:id",
 					element: <ShowTicketDetails />
-				}
+				},
+				{
+					path: "/edit-ticket/:id",
+					element: <UpdateTicketInfo />
+				},
 
 			],
 		},

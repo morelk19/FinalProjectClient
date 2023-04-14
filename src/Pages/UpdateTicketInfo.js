@@ -7,7 +7,7 @@ import axios from 'axios';
 const REACT_BACKEND = process.env.REACT_APP_ENDPOINT;
 
 
-function CreateTicket(props){
+function UpdateTicketInfo(props){
   const auth = localStorage.getItem(process.env.REACT_APP_TOKEN_HEADER_KEY)
   console.log(auth);
 
@@ -49,6 +49,26 @@ function CreateTicket(props){
       console.log('Error from ShowTicketList');
     })
     console.log(users);
+
+    axios
+    .get(REACT_BACKEND+'/get-one/'+this.props.id)
+    .then(res => {
+      // this.setState({...this.state, book: res.data})
+      setFormData({
+        title: res.data.title,
+        description: res.data.description,
+        relatedTicketIds: res.data.relatedTicketIds,
+        assignedToUserId: res.data.assignedToUserId,
+        status: res.data.status,
+        createdAt: res.data.createdAt,
+        createdById:  res.data.createdById,
+        lastModified: res.data.lastModified,
+        lastUpdatedById: res.data.lastUpdatedById,
+      })
+    })
+    .catch(err => {
+      console.log("Error from UpdateBlogInfo");
+    })
   }, [])
   
   const handleOnChange = e => {
@@ -64,18 +84,28 @@ function CreateTicket(props){
   const onSubmit = e => {
     e.preventDefault();
 
-    //pass formData to post
+    const data = {
+      title: formData.title,
+      description: formData.description,
+      relatedTicketIds: formData.relatedTicketIds,
+      assignedToUserId: formData.assignedToUserId,
+      status: formData.status,
+      createdAt: formData.createdAt,
+      createdById:  formData.createdById,
+      lastModified: formData.lastModified,
+      lastUpdatedById: formData.lastUpdatedById,
+    };
+
     axios
-      .post(REACT_BACKEND + '/create-one', formData)
+      .put(REACT_BACKEND+'/update-one/'+this.props.id, data)
       .then(res => {
-        setFormData(initialState);
-        navigate('/');
-  
+        this.props.history.push('/show-blog/'+this.props.id);
       })
       .catch(err => {
-        console.log("Error in CreateBlog!");
+        console.log("Error in UpdateBlogInfo!");
       })
-  }
+      navigate('/edit-ticket/'+ this.props.id);
+  };
   console.log(tickets);
 
 
@@ -269,4 +299,4 @@ function CreateTicket(props){
 
 }
 
-export default CreateTicket;
+export default UpdateTicketInfo;

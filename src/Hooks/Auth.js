@@ -7,7 +7,7 @@ const AuthContext = createContext();
 */
 export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null);
-	const [userEmail, setUserEmail] = useState("")
+	const [userEmail, setUserEmail] = useState("");
   const [isAuthLoading, setIsAuthLoading] = useState(false);
 
   //didcomponentupdate

@@ -10,7 +10,6 @@ const LoginPage = (props) => {
 	const navigate = useNavigate() // be able to navigate to home on login
 
   const handleOnClick = async () => {
-    console.log(password + email);
 
     // login in using auth context
     const loginResult = await auth.login(email, password);

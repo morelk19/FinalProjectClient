@@ -7,6 +7,7 @@ const urlEndpoint = process.env.REACT_APP_URL_ENDPOINT
 const HomePage = () => {
 	const [message, setMessage] = useState("")
 	const [loggedIn, setLoggedIn] = useState('');
+	const [, setUserID ] = useState('');
 	const auth = useAuth()
 	console.log(auth);
 
@@ -29,10 +30,19 @@ const HomePage = () => {
 				});
 				const responseJSON = await response.json();
 				console.log(responseJSON)
-				// setMessage(responseJSON.message)
+				if(responseJSON.success)
+				{
+					setMessage(responseJSON.message)
+					
+					setUserID(responseJSON.userID)
+				}else{
+					throw responseJSON.message
+				}
+				 
 
 			}catch(e){
-				console.log("got here")
+				console.log(e)
+				auth.logout();
 				setMessage("");
 			setLoggedIn(false);
 			}
@@ -55,9 +65,9 @@ const HomePage = () => {
 	return (
 		<div>
 			<h1>Home Page</h1>
-			{/* <p>Message: {message}</p>
+			<p>Message: {message}</p>
 			{loggedIn
-        ? <ShowTicketList/> */}
+        ? <ShowTicketList/>
         : ''
       }
 		</div>
