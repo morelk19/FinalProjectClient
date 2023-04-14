@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import '../App.css';
 import axios from 'axios';
 
@@ -10,6 +10,7 @@ const REACT_BACKEND = process.env.REACT_APP_ENDPOINT;
 function UpdateTicketInfo(props){
   const auth = localStorage.getItem(process.env.REACT_APP_TOKEN_HEADER_KEY)
   console.log(auth);
+  const { id } = useParams()
 
   const navigate = useNavigate();
   
@@ -51,7 +52,7 @@ function UpdateTicketInfo(props){
     console.log(users);
 
     axios
-    .get(REACT_BACKEND+'/get-one/'+this.props.id)
+    .get(REACT_BACKEND+'/get-one/'+ id)
     .then(res => {
       // this.setState({...this.state, book: res.data})
       setFormData({
@@ -97,14 +98,14 @@ function UpdateTicketInfo(props){
     };
 
     axios
-      .put(REACT_BACKEND+'/update-one/'+this.props.id, data)
+      .put(REACT_BACKEND+'/update-one/'+ id, data)
       .then(res => {
-        this.props.history.push('/show-blog/'+this.props.id);
+        this.props.history.push('/show-blog/'+ id);
       })
       .catch(err => {
         console.log("Error in UpdateBlogInfo!");
       })
-      navigate('/edit-ticket/'+ this.props.id);
+      navigate('/show-ticket/'+ id);
   };
   console.log(tickets);
 

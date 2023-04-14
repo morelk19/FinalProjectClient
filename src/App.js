@@ -45,11 +45,11 @@ function App() {
 					element: <CreateTicket />
 				},
 				{
-					path: "/show-ticket/:id",
+					path: "show-ticket/:id",
 					element: <ShowTicketDetails />
 				},
 				{
-					path: "/edit-ticket/:id",
+					path: "edit-ticket/:id",
 					element: <UpdateTicketInfo />
 				},
 
