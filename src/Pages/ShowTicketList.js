@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css';
+
 import axios from 'axios'; //library for making requests (easier to use than fetch)
 import { Link } from 'react-router-dom';
 import TicketCard from '../components/TicketCard';
