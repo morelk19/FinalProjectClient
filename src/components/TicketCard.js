@@ -1,3 +1,4 @@
+import { Card, CardBody, CardFooter, CardHeader, SimpleGrid, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -6,20 +7,32 @@ const TicketCard = (props) => {
     const  ticket  = props.ticket;
 
     return(
-        <div className="card-container">
-            <div className="desc">
-                <h2>
+        <SimpleGrid spacing={10} bg= "gray.200" minChildWidth= "300px">
+            <Card>
+                <CardHeader>
                     <Link to={`/show-ticket/${ticket._id}`}>
                         { ticket.title }
                     </Link>
-                </h2>
-                <p>{ticket.assignedToUserId}</p>
-                <p>{ticket.description}</p>
-                <p>{ticket.status}</p>
+                </CardHeader>
+                <CardBody>
+                    <Text>{ticket.assignedToUserId}</Text>
+                    <Text>{ticket.description}</Text>
+                </CardBody>
+                <CardFooter>
+                    <Text>
+                        Status: {ticket.status}
+                    </Text>
+                </CardFooter>
 
-            </div>
-        </div>
+            </Card>
+        </SimpleGrid>
+
+
+
     )
 };
 
 export default TicketCard;
+  
+
+

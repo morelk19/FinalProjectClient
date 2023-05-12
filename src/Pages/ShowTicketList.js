@@ -4,6 +4,7 @@ import axios from 'axios'; //library for making requests (easier to use than fet
 import { Link } from 'react-router-dom';
 import TicketCard from '../components/TicketCard';
 import { useState, useEffect } from 'react';
+import { SimpleGrid } from '@chakra-ui/react';
 
 
 const REACT_BACKEND = process.env.REACT_APP_ENDPOINT;
@@ -47,12 +48,14 @@ function ShowTicketList(props){
             <hr />
           </div>
 
-        </div>
+        </div>     
 
         <div className="list">
+        <SimpleGrid spacing={10} bg= "gray.200" minChildWidth= "300px">
               {tickets.map((ticket, k) =>
       <TicketCard ticket={ticket} key={k} />
     )}
+        </SimpleGrid>
         </div>
         
       </div>
