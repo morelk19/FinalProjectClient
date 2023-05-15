@@ -4,13 +4,13 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
+
 const REACT_BACKEND = process.env.REACT_APP_ENDPOINT;
 
 function ShowTicketDetails(props){
     const [ticket, setTicket] = useState({});
     const { id } = useParams()
     const navigate = useNavigate();
-
    
     useEffect(() => {
 
@@ -70,9 +70,8 @@ function ShowTicketDetails(props){
             </div>
 
             <div className="col-md-6">
-              <Link to={`/edit-ticket/${ticket._id}`} className="btn btn-outline-info btn-lg btn-block">
-                    Edit Ticket
-              </Link>
+              <Link to={`/edit-ticket/${id}`}>Edit Ticket</Link>
+              <></>
               <br />
             </div>
 
@@ -104,14 +103,6 @@ function TicketItem(props){
           <tr>
             <th scope="row">3</th>
             <td>Related Ticket ID's</td>
-            {/* { props.ticket.relatedTickedIds.map((ids)=>{
-              return(
-                <tr>
-                  <th scope="row"></th>
-                  <td>{ids}</td>
-                </tr>
-              )
-            })} */}
             <td>{ props.ticket.relatedTicketIds }</td>
           </tr>
           <tr>

@@ -37,10 +37,6 @@ function App() {
 					element: <RegistrationPage />
 				},
 				{
-					path: "showTicketList",
-					element: <ShowTicketList />
-				},
-				{
 					path: "create-ticket",
 					element: <CreateTicket />
 				},

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import axios from 'axios';
+import { FormControl, FormLabel } from '@chakra-ui/react';
 
 
 const REACT_BACKEND = process.env.REACT_APP_ENDPOINT;
 
 
 function UpdateTicketInfo(props){
-  const auth = localStorage.getItem(process.env.REACT_APP_TOKEN_HEADER_KEY)
-  console.log(auth);
   const { id } = useParams()
+
 
   const navigate = useNavigate();
   
+
 
   const initialState = {
     title: '',
@@ -22,9 +23,9 @@ function UpdateTicketInfo(props){
     assignedToUserId: '',
     status: 'incomplete',
     createdAt:  Date.now,
-    createdById:  props._id,
+    createdById:  '',
     lastModified: Date.now,
-    lastUpdatedById: props._id,
+    lastUpdatedById: '',
 }
 
   const [formData, setFormData] = useState(initialState)
@@ -49,27 +50,16 @@ function UpdateTicketInfo(props){
     .catch(err =>{
       console.log('Error from ShowTicketList');
     })
-    console.log(users);
 
     axios
-    .get(REACT_BACKEND+'/get-one/'+ id)
+    .get(REACT_BACKEND+ "/get-one/"+ id)
     .then(res => {
-      // this.setState({...this.state, book: res.data})
-      setFormData({
-        title: res.data.title,
-        description: res.data.description,
-        relatedTicketIds: res.data.relatedTicketIds,
-        assignedToUserId: res.data.assignedToUserId,
-        status: res.data.status,
-        createdAt: res.data.createdAt,
-        createdById:  res.data.createdById,
-        lastModified: res.data.lastModified,
-        lastUpdatedById: res.data.lastUpdatedById,
-      })
+      setFormData(res.data.oneTicketPost);
     })
-    .catch(err => {
-      console.log("Error from UpdateBlogInfo");
+    .catch(err =>{
+      console.log('Error from ShowTicketList');
     })
+    console.log(users);
   }, [])
   
   const handleOnChange = e => {
@@ -85,219 +75,182 @@ function UpdateTicketInfo(props){
   const onSubmit = e => {
     e.preventDefault();
 
-    const data = {
-      title: formData.title,
-      description: formData.description,
-      relatedTicketIds: formData.relatedTicketIds,
-      assignedToUserId: formData.assignedToUserId,
-      status: formData.status,
-      createdAt: formData.createdAt,
-      createdById:  formData.createdById,
-      lastModified: formData.lastModified,
-      lastUpdatedById: formData.lastUpdatedById,
-    };
-
+    //pass formData to post
     axios
-      .put(REACT_BACKEND+'/update-one/'+ id, data)
+      .put(REACT_BACKEND + '/update-one/'+ id, formData)
       .then(res => {
-        this.props.history.push('/show-blog/'+ id);
+        navigate('/');
+  
       })
       .catch(err => {
-        console.log("Error in UpdateBlogInfo!");
+        console.log("Error in CreateBlog!");
       })
-      navigate('/show-ticket/'+ id);
-  };
-  console.log(tickets);
+  }
+  console.log(formData);
 
 
   return (
-    <div className="CreateTicket">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-8 m-auto">
-            <br />
-            <Link to="/" className="btn btn-outline-warning float-left">
-                Show Ticket List
-            </Link>
-          </div>
-          <div className="col-md-8 m-auto">
-            <h1 className="display-4 text-center">Add </h1>
-            <p className="lead text-center">
-                Create New Ticket
-            </p>
+  <form noValidate onSubmit={onSubmit}>
+    <FormControl className='form-group'>
+      <FormLabel htmlFor="formText">Title</FormLabel>
+        <input
+          type='text'
+          placeholder='Title of the Ticket'
+          name='title'
+          className='form-control'
+          value={formData.title}
+          onChange={handleOnChange}
+        />
+      </FormControl>
 
-            <form noValidate onSubmit={onSubmit}>
-            <div className='form-group'>
-              <label htmlFor="formText">Title</label>
-                <input
-                  type='text'
-                  placeholder='Title of the Ticket'
-                  name='title'
-                  className='form-control'
-                  value={formData.title}
-                  onChange={handleOnChange}
-                />
-              </div>
+      <FormControl className='form-group'>
+      <FormLabel htmlFor="formDescription">Description</FormLabel>
+    <textarea 
+        placeholder='Description'
+        name='description'
+        className='form-control'
+        value={formData.description}
+        onChange={handleOnChange}
+        class="form-control" 
+        aria-label="With textarea"></textarea>
+    </FormControl>
 
-            <div className='form-group'>
-            <div>
-            <label htmlFor="description">Description: </label>
-            </div>
-            <textarea 
-                placeholder='Description'
-                name='description'
-                className='form-control'
-                value={formData.description}
-                onChange={handleOnChange}
-                class="form-control" 
-                aria-label="With textarea"></textarea>
-            </div>
+    <FormControl className='form-group'>
+    <FormLabel htmlFor="formText">Asssigned to User ID</FormLabel>
+    <select 
+        placeholder='Assigned To User ID'
+        name='assignedToUserId'
+        className='form-control'
+        value={formData.assignedToUserId}
+        onChange={handleOnChange}
+        
+        >
+      {users.map((assignedToUserId) =>{
 
-            <div>
-            <label htmlFor="assignedToUserId">Asssigned to User ID</label>
-            <select 
-                placeholder='Assigned To User ID'
-                name='assignedToUserId'
-                className='form-control'
-                value={formData.assignedToUserId}
-                onChange={handleOnChange}
-               >
-              {users.map((assignedToUserId) =>{
+          return (
+          <option key={assignedToUserId._id} value ={assignedToUserId._id}>
+            {assignedToUserId._id}
+          </option>
+        )
+        })}
+    </select>
+    </FormControl>
 
-                  return (
-                  <option key={assignedToUserId._id} value ={assignedToUserId._id}>
-                    {assignedToUserId._id}
-                  </option>
-                )
-                })}
-            </select>
-            </div>
+    <FormControl className='form-group'>
+    <FormLabel htmlFor="formText">Related Ticket ID's</FormLabel>
+    <select 
+        placeholder='Assigned To User ID'
+        name='relatedTicketIds'
+        className='form-control'
+        value={formData.relatedTicketIds}
+        onChange={handleOnChange}
+        
+        >
+      {tickets.map((ticket) =>{
 
-            <div>
-            <label htmlFor="relatedTicketIds">Related Ticket ID's</label>
-            <select 
-                placeholder='related to Ticket ID'
-                name='title'
-                className='form-control'
-                value={formData.relatedTicketIds}
-                onChange={handleOnChange}
-               >
-              {tickets.map((relatedTicketId) =>{
-              return (
-              <option key={relatedTicketId._id} value ={relatedTicketId._id}>
-              {relatedTicketId._id}
-              </option>
-              )
-              })}
+          return (
+          <option key={ticket._id} value ={ticket._id}>
+            {ticket._id}
+          </option>
+        )
+        })}
+    </select>
+    </FormControl>
 
-            </select>
-            </div>
+    <FormControl className='form-group'>
+    <FormLabel htmlFor="formText">Status: </FormLabel>
+    <select 
+        placeholder='Status'
+        name='status'
+        className='form-control'
+        value={formData.status}
+        onChange={handleOnChange}
+        >
+          <option key="incomplete" value ="incomplete">
+            incomplete
+          </option>
+          <option key="complete" value ="complete">
+            complete
+          </option>
+          <option key="deferred" value ="deferred">
+            deferred
+          </option>
+        
+    </select>
+    </FormControl>
 
-            <div>
-            <label htmlFor="status">Status: </label>
-            <select 
-                placeholder='Status'
-                name='status'
-                className='form-control'
-                value={formData.status}
-                onChange={handleOnChange}
-               >
-                 <option key="incomplete" value ="incomplete">
-                    incomplete
-                  </option>
-                  <option key="complete" value ="complete">
-                    complete
-                  </option>
-                  <option key="deferred" value ="deferred">
-                    deferred
-                  </option>
-                
-            </select>
-            </div>
+    <FormControl className='form-group'>
+    <FormLabel htmlFor="formText">Created Date</FormLabel>
+        <input
+          type='date'
+          placeholder='CreatedAtDate'
+          name='createdAt'
+          className='form-control'
+          value={formData.createdAt}
+          onChange={handleOnChange}
+        />
+      </FormControl>
 
-            <div className='form-group'>
-              <label htmlFor="createdAt">Created Date</label>
-                <input
-                  type='date'
-                  placeholder='CreatedAtDate'
-                  name='createdAt'
-                  className='form-control'
-                  value={formData.createdAt}
-                  onChange={handleOnChange}
-                />
-              </div>
+      <FormControl className='form-group'>
+    <FormLabel htmlFor="formText">Created By ID</FormLabel>
+    <select 
+        placeholder='Created By ID'
+        name='createdById'
+        className='form-control'
+        value={formData.createdById}
+        onChange={handleOnChange}
+        >
+      {users.map((assignedToUserId) =>{
 
-              <div>
-            <label htmlFor="createdById">Created By ID</label>
-            <select 
-                placeholder='Created By ID'
-                name='createdById'
-                className='form-control'
-                value={formData.createdById}
-                onChange={handleOnChange}
-               >
-                <option key={auth.userId} value ={auth._id}>
-                    {auth._id}
-                  </option>
-              {users.map((assignedToUserId) =>{
+          return (
+          <option >
+            {assignedToUserId._id}
+          </option>
+        )
+        })}
+    </select>
+    </FormControl>
 
-                  return (
-                  <option key={assignedToUserId._id} value ={assignedToUserId._id}>
-                    {assignedToUserId._id}
-                  </option>
-                )
-                })}
-            </select>
-            </div>
+    
 
-            
-            <div className='form-group'>
-              <label htmlFor="lastModified">Last Modified</label>
-                <input
-                  type='date'
-                  placeholder='Last Modified'
-                  name='lastModified'
-                  className='form-control'
-                  value={formData.lastModified}
-                  onChange={handleOnChange}
-                />
-              </div>
+    <FormControl className='form-group'>
+    <FormLabel htmlFor="formText">Last Modified</FormLabel>
+        <input
+          type='date'
+          placeholder='Last Modified'
+          name='lastModified'
+          className='form-control'
+          value={formData.lastModified}
+          onChange={handleOnChange}
+        />
+      </FormControl>
 
-            <div>
-            <label htmlFor="lastUpdatedById">Last Updated By </label>
-            <select 
-                placeholder='Last Updated By'
-                name='lastUpdatedById'
-                className='form-control'
-                value={formData.lastUpdatedById}
-                onChange={handleOnChange}
-               >
-                <option key={auth.userId} value ={auth._id}>
-                    {auth._id}
-                  </option>
-              {users.map((assignedToUserId) =>{
+    <FormControl className='form-group'>
+    <FormLabel htmlFor="formText">Last Updated By </FormLabel>
+    <select 
+        placeholder='Last Updated By'
+        name='lastUpdatedById'
+        className='form-control'
+        value={formData.lastUpdatedById}
+        onChange={handleOnChange}
+        >
+      {users.map((assignedToUserId) =>{
+          return (
+          <option >
+            {assignedToUserId._id}
+          </option>
+        )
+        })}
+    </select>
+    </FormControl>
 
-                  return (
-                  <option key={assignedToUserId._id} value ={assignedToUserId._id}>
-                    {assignedToUserId._id}
-                  </option>
-                )
-                })}
-            </select>
-            </div>
-
-              <input
-                  type="submit"
-                  className="btn btn-outline-warning btn-block mt-4"
-              />
-            </form>
-        </div>
-        </div>
-      </div>
-    </div>
-
+      <input
+          type="submit"
+          className="btn btn-outline-warning btn-block mt-4"
+      />
+    </form>
+  
   );
 
 }
-
 export default UpdateTicketInfo;

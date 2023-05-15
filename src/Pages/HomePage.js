@@ -66,11 +66,10 @@ const HomePage = () => {
 		<div>
 			<h1>Home Page</h1>
 			<p>Message: {message}</p>
-			<ShowTicketList/>
-			{/* {loggedIn
+			{loggedIn
         ? <ShowTicketList/>
         : ''
-      } */}
+      }
 		</div>
 
 	)
